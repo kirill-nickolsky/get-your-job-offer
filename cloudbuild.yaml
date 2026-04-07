@@ -1,0 +1,56 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -t
+      - gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$SHORT_SHA
+      - -t
+      - gcr.io/$PROJECT_ID/${_SERVICE_NAME}:latest
+      - ./cloud
+
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: bash
+    args:
+      - -ceu
+      - |
+        IMAGE="gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$SHORT_SHA"
+        RUNTIME_SA="${_RUNTIME_SERVICE_ACCOUNT_ID}@$PROJECT_ID.iam.gserviceaccount.com"
+
+        DEPLOY_ARGS=(
+          run deploy "${_SERVICE_NAME}"
+          --image "$IMAGE"
+          --region "${_REGION}"
+          --platform managed
+          --allow-unauthenticated
+          --service-account "$RUNTIME_SA"
+          --cpu 1
+          --memory 512Mi
+          --timeout 300
+          --concurrency 10
+          --max-instances 1
+          --set-env-vars "NODE_ENV=production,DATA_BACKEND=firestore,TASKS_INLINE=false,ANALYTICS_SINK_MODE=noop,GCP_PROJECT_ID=$PROJECT_ID,GCP_LOCATION=${_REGION},TASK_QUEUE_NORMALIZE=vacancy-normalize,TASK_QUEUE_ENRICH=vacancy-enrich,TASK_QUEUE_RATE=vacancy-rate,TASK_QUEUE_NOTIFY=vacancy-notify,TASK_QUEUE_SYNC_SHEETS=sync-sheets,TASK_QUEUE_STATS_REFRESH=stats-refresh,DEFAULT_POLL_SECONDS=${_DEFAULT_POLL_SECONDS},SCRAPE_LEASE_MINUTES=${_SCRAPE_LEASE_MINUTES},SCRAPE_PLAN_DAILY_CAP=24,TASK_ENQUEUE_DAILY_CAP=200,NOTIFY_DAILY_CAP=20,ADDON_AUTH_MODE=hmac,TASK_AUTH_MODE=shared-token,TELEGRAM_MODE=real,ALLOW_FAKE_TELEGRAM_SESSION=false,RATE_PROVIDER=rule-based"
+          --update-secrets "TELEGRAM_BOT_TOKEN=telegram-bot-token:latest,TELEGRAM_CHAT_ID=telegram-chat-id:latest,ADDON_SHARED_TOKEN=addon-shared-token:latest,ADDON_HMAC_SECRET=addon-hmac-secret:latest,INTERNAL_TASK_TOKEN=internal-task-token:latest,MINI_APP_SESSION_SECRET=mini-app-session-secret:latest,TELEGRAM_WEBHOOK_SECRET=telegram-webhook-secret:latest"
+        )
+
+        if [ -n "${_GAS_WEBAPP_URL}" ]; then
+          DEPLOY_ARGS+=(--set-env-vars "GAS_WEBAPP_URL=${_GAS_WEBAPP_URL}")
+        fi
+
+        gcloud "${DEPLOY_ARGS[@]}"
+
+        SERVICE_URL="$(gcloud run services describe "${_SERVICE_NAME}" --region "${_REGION}" --format='value(status.url)')"
+        gcloud run services update "${_SERVICE_NAME}" --region "${_REGION}" --update-env-vars "SERVICE_BASE_URL=${SERVICE_URL}"
+
+        printf 'Cloud Run URL: %s\n' "$SERVICE_URL"
+
+images:
+  - gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$SHORT_SHA
+  - gcr.io/$PROJECT_ID/${_SERVICE_NAME}:latest
+
+substitutions:
+  _REGION: europe-west1
+  _SERVICE_NAME: hrscrape2mart-cloud
+  _RUNTIME_SERVICE_ACCOUNT_ID: hrscrape2mart-runtime
+  _DEFAULT_POLL_SECONDS: "300"
+  _SCRAPE_LEASE_MINUTES: "15"
+  _GAS_WEBAPP_URL: ""

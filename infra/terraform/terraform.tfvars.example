@@ -1,0 +1,27 @@
+project_id = "your-gcp-project-id"
+region     = "europe-west1"
+
+service_name                = "hrscrape2mart-cloud"
+runtime_service_account_id  = "hrscrape2mart-runtime"
+cloud_build_service_account_email = "123456789012@cloudbuild.gserviceaccount.com"
+
+gas_webapp_url        = "https://script.google.com/macros/s/your-webapp-id/exec"
+# First apply can keep this empty. Fill the real Cloud Run URL after first deploy,
+# then rerun `terraform apply` to create scheduler jobs.
+service_base_url      = ""
+scheduler_timezone    = "Asia/Tbilisi"
+bigquery_dataset_id   = "hrscrape_mart"
+billing_account_id    = "000000-000000-000000"
+budget_currency_code  = "USD"
+budget_amount_units   = 5
+budget_alert_emails   = ["you@example.com"]
+default_poll_seconds  = 300
+scrape_lease_minutes  = 15
+
+addon_shared_token      = "replace-me"
+addon_hmac_secret       = "replace-me"
+internal_task_token     = "replace-me"
+telegram_bot_token      = "replace-me"
+telegram_chat_id        = "replace-me"
+mini_app_session_secret = "replace-me"
+telegram_webhook_secret = "replace-me"

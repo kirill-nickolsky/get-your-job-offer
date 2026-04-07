@@ -1,0 +1,6 @@
+cv/
+.DS_Store
+node_modules/
+dist/
+.env
+.terraform/

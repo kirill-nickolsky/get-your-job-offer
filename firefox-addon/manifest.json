@@ -1,0 +1,196 @@
+{
+  "manifest_version": 2,
+  "name": "get-your-offer - Job Scraper",
+  "version": "1.1.28",
+  "description": "Scrapes job listings from Get on Board, HeadHunter, Habr Career, Lever, Jobspresso, and more and exports to TSV format",
+  "applications": {
+    "gecko": {
+      "id": "hrscrape2mart@getonbrd.com",
+      "strict_min_version": "60.0"
+    }
+  },
+  "permissions": [
+    "activeTab",
+    "alarms",
+    "tabs",
+    "webNavigation",
+    "contextMenus",
+    "storage",
+    "clipboardWrite",
+    "<all_urls>",
+    "*://docs.google.com/*",
+    "*://script.google.com/*",
+    "*://script.googleusercontent.com/*",
+    "*://chatgpt.com/*",
+    "*://hh.ru/*",
+    "*://*.hh.ru/*",
+    "*://headhunter.ge/*",
+    "*://*.headhunter.ge/*",
+    "*://career.habr.com/*",
+    "*://trabajo.gallito.com.uy/*",
+    "*://*.linkedin.com/*",
+    "*://jobs.lever.co/*",
+    "*://jobspresso.co/*",
+    "*://*.jobspresso.co/*",
+    "*://platform.torc.dev/*",
+    "*://*.torc.dev/*",
+    "*://app.careers.revelo.com/*",
+    "*://*.careers.revelo.com/*",
+    "*://www.workatastartup.com/*",
+    "*://workatastartup.com/*",
+    "*://*.workatastartup.com/*"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png",
+    "128": "icons/icon-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content-autofill.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "*://www.getonbrd.com/myjobs*",
+        "*://www.getonbrd.com/jobs*",
+        "*://getonbrd.com/myjobs*",
+        "*://getonbrd.com/jobs*",
+        "*://hh.ru/search/vacancy*",
+        "*://*.hh.ru/search/vacancy*",
+        "*://headhunter.ge/search/vacancy*",
+        "*://*.headhunter.ge/search/vacancy*",
+        "*://career.habr.com/vacancies*",
+        "*://trabajo.gallito.com.uy/buscar*",
+        "*://jobs.lever.co/*",
+        "*://*.computrabajo.com/empleos*",
+        "*://*.computrabajo.com/ofertas-de-trabajo*",
+        "*://wellfound.com/jobs*",
+        "*://wellfound.com/company/*/jobs*",
+        "*://jobspresso.co/remote-work*",
+        "*://jobspresso.co/remote-*",
+        "*://jobspresso.co/*feed=job_feed*",
+        "*://jobspresso.co/*/feed/*",
+        "*://jobspresso.co/jobs*",
+        "*://platform.torc.dev/*",
+        "*://*.torc.dev/*",
+        "*://app.careers.revelo.com/*",
+        "*://*.careers.revelo.com/*",
+        "*://www.workatastartup.com/companies*",
+        "*://www.workatastartup.com/jobs/*",
+        "*://workatastartup.com/companies*",
+        "*://workatastartup.com/jobs/*",
+        "*://*.linkedin.com/*",
+        "*://linkedin.com/*"
+      ],
+      "js": [
+        "utils/normalize.js",
+        "utils/parse.js",
+        "utils/schema.js",
+        "utils/job.js",
+        "utils/debug.js",
+        "utils/dom.js",
+        "utils/source-helpers.js",
+        "utils/validateSource.js",
+        "sources/index.js",
+        "sources/hh.js",
+        "sources/getonbrd.js",
+        "sources/habr.js",
+        "sources/gallito.js",
+        "sources/lever.js",
+        "sources/computrabajo.js",
+        "sources/linkedin.js",
+        "sources/jobspresso.js",
+        "sources/torc.js",
+        "sources/revelo.js",
+        "sources/wellfound.js",
+        "sources/workatastartup.js",
+        "content-list.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://www.getonbrd.com/jobs/*",
+        "*://getonbrd.com/jobs/*",
+        "*://hh.ru/vacancy/*",
+        "*://*.hh.ru/vacancy/*",
+        "*://headhunter.ge/vacancy/*",
+        "*://*.headhunter.ge/vacancy/*",
+        "*://career.habr.com/vacancies/*",
+        "*://trabajo.gallito.com.uy/anuncio/*",
+        "*://jobs.lever.co/*",
+        "*://*.computrabajo.com/ofertas-de-trabajo/*",
+        "*://*.computrabajo.com/trabajo-*",
+        "*://wellfound.com/company/*/jobs/*",
+        "*://wellfound.com/jobs/*",
+        "*://jobspresso.co/job/*",
+        "*://jobspresso.co/jobs/*",
+        "*://jobspresso.co/remote-work*",
+        "*://jobspresso.co/remote-*",
+        "*://platform.torc.dev/*",
+        "*://*.torc.dev/*",
+        "*://app.careers.revelo.com/*",
+        "*://*.careers.revelo.com/*",
+        "*://www.workatastartup.com/jobs/*",
+        "*://workatastartup.com/jobs/*",
+        "*://*.linkedin.com/*",
+        "*://linkedin.com/*"
+      ],
+      "js": [
+        "utils/normalize.js",
+        "utils/parse.js",
+        "utils/schema.js",
+        "utils/job.js",
+        "utils/debug.js",
+        "utils/dom.js",
+        "utils/source-helpers.js",
+        "utils/validateSource.js",
+        "sources/index.js",
+        "sources/hh.js",
+        "sources/getonbrd.js",
+        "sources/habr.js",
+        "sources/gallito.js",
+        "sources/lever.js",
+        "sources/computrabajo.js",
+        "sources/linkedin.js",
+        "sources/jobspresso.js",
+        "sources/torc.js",
+        "sources/revelo.js",
+        "sources/wellfound.js",
+        "sources/workatastartup.js",
+        "content-job.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "browser_action": {
+    "default_icon": {
+      "16": "icons/toolbar-16-v2.png",
+      "19": "icons/toolbar-19-v2.png",
+      "32": "icons/toolbar-32-v2.png",
+      "38": "icons/toolbar-38-v2.png",
+      "48": "icons/toolbar-48-v2.png"
+    },
+    "default_popup": "popup.html"
+  },
+  "web_accessible_resources": [
+    "content-list.js",
+    "content-job.js"
+  ]
+}

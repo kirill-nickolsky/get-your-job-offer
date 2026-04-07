@@ -1,0 +1,31 @@
+{
+  "name": "hrscrape2mart-cloud",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cloud Run backend for get-your-offer planner, pipeline tasks, and Telegram flows",
+  "main": "dist/src/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/src/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "seed:source-configs": "tsx scripts/seed-source-configs.ts",
+    "smoke:e2e": "tsx scripts/e2e-smoke.ts",
+    "smoke:bot": "tsx scripts/bot-smoke.ts"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@google-cloud/firestore": "^7.11.0",
+    "@google-cloud/tasks": "^5.5.2",
+    "express": "^4.21.2",
+    "jose": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.13.14",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}

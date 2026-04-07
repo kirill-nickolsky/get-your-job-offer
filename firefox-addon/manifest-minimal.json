@@ -1,0 +1,51 @@
+{
+  "manifest_version": 2,
+  "name": "get-your-offer - Get on Board Scraper",
+  "version": "1.0.0",
+  "description": "Scrapes job listings from Get on Board and exports to TSV format",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.getonbrd.com/myjobs*", "*://www.getonbrd.com/jobs*"],
+      "js": [
+        "utils/normalize.js",
+        "utils/parse.js",
+        "utils/schema.js",
+        "utils/debug.js",
+        "utils/dom.js",
+        "utils/source-helpers.js",
+        "utils/validateSource.js",
+        "sources/index.js",
+        "sources/getonbrd.js",
+        "content-list.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://www.getonbrd.com/jobs/*"],
+      "js": [
+        "utils/normalize.js",
+        "utils/parse.js",
+        "utils/schema.js",
+        "utils/debug.js",
+        "utils/dom.js",
+        "utils/source-helpers.js",
+        "utils/validateSource.js",
+        "sources/index.js",
+        "sources/getonbrd.js",
+        "content-job.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "browser_action": {
+    "default_popup": "popup.html"
+  }
+}

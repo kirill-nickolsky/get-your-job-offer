@@ -1,0 +1,62 @@
+[
+  {
+    "source_id": "linkedin",
+    "name": "LinkedIn",
+    "enabled": true,
+    "scrape_page_id": "linkedin",
+    "scrape_page_urls": [
+      "https://www.linkedin.com/jobs/search/?keywords=backend"
+    ],
+    "priority": 300,
+    "min_interval_min": 30,
+    "retry_limit": 2,
+    "retry_backoff_min": 15,
+    "daily_success_cap": 0,
+    "max_tabs_per_site": 2,
+    "leased_until": "",
+    "last_started_at": "",
+    "last_success_at": "",
+    "last_failure_at": "",
+    "consecutive_failures": 0
+  },
+  {
+    "source_id": "hh",
+    "name": "HeadHunter",
+    "enabled": true,
+    "scrape_page_id": "hh",
+    "scrape_page_urls": [
+      "https://hh.ru/search/vacancy?text=backend"
+    ],
+    "priority": 200,
+    "min_interval_min": 60,
+    "retry_limit": 2,
+    "retry_backoff_min": 20,
+    "daily_success_cap": 2,
+    "max_tabs_per_site": 2,
+    "leased_until": "",
+    "last_started_at": "",
+    "last_success_at": "",
+    "last_failure_at": "",
+    "consecutive_failures": 0
+  },
+  {
+    "source_id": "habr",
+    "name": "Habr Career",
+    "enabled": true,
+    "scrape_page_id": "habr",
+    "scrape_page_urls": [
+      "https://career.habr.com/vacancies?q=backend&type=all"
+    ],
+    "priority": 100,
+    "min_interval_min": 180,
+    "retry_limit": 2,
+    "retry_backoff_min": 30,
+    "daily_success_cap": 1,
+    "max_tabs_per_site": 1,
+    "leased_until": "",
+    "last_started_at": "",
+    "last_success_at": "",
+    "last_failure_at": "",
+    "consecutive_failures": 0
+  }
+]

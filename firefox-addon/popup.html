@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 400px;
+      padding: 15px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 14px;
+    }
+    h1 {
+      font-size: 18px;
+      margin: 0 0 15px 0;
+      color: #333;
+    }
+    .button {
+      background: #005267;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      width: 100%;
+      margin: 5px 0;
+    }
+    .button:hover {
+      background: #006d8a;
+    }
+    .button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .button.secondary {
+      background: #6c757d;
+    }
+    .button.secondary:hover {
+      background: #5a6268;
+    }
+    .status {
+      margin: 10px 0;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .status.success {
+      background: #d4edda;
+      color: #155724;
+    }
+    .status.error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    .status.info {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+    #lRateStatusMessage {
+      white-space: pre-line;
+    }
+    .progress {
+      margin: 10px 0;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 20px;
+      background: #e9ecef;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: #005267;
+      transition: width 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 11px;
+    }
+    #statusMessage {
+      min-height: 20px;
+      margin: 10px 0;
+    }
+    .hidden {
+      display: none;
+    }
+    .sources {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      background: #fff;
+    }
+    .sources-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+    .sources-toggle {
+      font-weight: normal;
+      font-size: 12px;
+    }
+    .sources-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: normal;
+      font-size: 12px;
+    }
+    .source-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      padding: 4px 0;
+    }
+    .debug-section {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      background: #fff;
+    }
+    .debug-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .button.inline {
+      width: auto;
+      padding: 6px 12px;
+      font-size: 12px;
+      margin: 0;
+    }
+    .debug-count {
+      font-size: 12px;
+      color: #555;
+    }
+    .lrate-debug {
+      margin: 8px 0 10px;
+      padding: 10px;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      background: #fff;
+      font-size: 12px;
+    }
+    .lrate-debug .row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .lrate-debug input[type="number"] {
+      width: 90px;
+      padding: 4px 6px;
+      font-size: 12px;
+    }
+    .lrate-debug input.invalid {
+      border: 1px solid #b00020;
+    }
+    .lrate-debug .error {
+      color: #b00020;
+      font-size: 11px;
+      margin-top: 6px;
+    }
+    .lrate-debug .error.hidden {
+      display: none;
+    }
+    .autofill-section {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      background: #fff;
+      font-size: 12px;
+    }
+    .autofill-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .autofill-form {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .autofill-form input,
+    .autofill-form textarea {
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 12px;
+      padding: 6px 8px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+    }
+    .autofill-form textarea {
+      min-height: 58px;
+      resize: vertical;
+      font-family: inherit;
+    }
+    .autofill-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .autofill-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .autofill-item {
+      border: 1px solid #e9ecef;
+      border-radius: 6px;
+      padding: 6px 8px;
+    }
+    .autofill-item-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .autofill-item-label {
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .autofill-item-value {
+      color: #5f6368;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 44px;
+      overflow: hidden;
+    }
+    .autofill-empty {
+      color: #5f6368;
+      font-size: 12px;
+      padding: 4px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>get-your-offer Scraper</h1>
+
+  <div id="sourcesSection" class="sources hidden">
+    <div class="sources-header">
+      <span>Sources</span>
+      <div class="sources-controls">
+        <label class="sources-toggle">
+          <input type="checkbox" id="sourcesToggleExpand" checked> Show
+        </label>
+        <label class="sources-toggle">
+          <input type="checkbox" id="sourcesToggleAll"> All
+        </label>
+      </div>
+    </div>
+    <div id="sourcesList"></div>
+  </div>
+  
+  <button id="scrapeAllBtn" class="button">Scrape All New Jobs</button>
+  <button id="clearBtn" class="button secondary">Clear Data</button>
+
+  <div id="statusMessage"></div>
+  
+  <div id="progressContainer" class="progress hidden">
+    <div class="progress-bar">
+      <div id="progressFill" class="progress-fill" style="width: 0%">0%</div>
+    </div>
+  </div>
+
+  <div id="progressDetails" class="status info hidden">
+    <div>Phase: <span id="phaseText">-</span></div>
+    <div>Source: <span id="sourceText">-</span></div>
+    <div>Source progress: <span id="sourceProgressText">0/0</span></div>
+    <div>Staged: <span id="stagedCount">0</span></div>
+    <div>Errors: <span id="errorCount">0</span></div>
+    <div id="lastErrorRow" class="hidden">Last error: <span id="lastErrorText"></span></div>
+    <div id="lastDebugRow" class="hidden">Last debug: <span id="lastDebugText"></span></div>
+  </div>
+
+  <button id="lRateBtn" class="button">LRate (2LRate -> NewJobs)</button>
+  <div class="lrate-debug">
+    <label>
+      <input type="checkbox" id="lrateDebugEnabled">
+      Debug mode
+    </label>
+    <div id="lrateDebugSettings" class="hidden">
+      <div class="row">
+        <label for="lrateRowsPerWorker">Vacancies per worker:</label>
+        <input type="number" id="lrateRowsPerWorker" min="1" max="50" step="1" inputmode="numeric">
+      </div>
+      <div class="row">
+        <label>
+          <input type="checkbox" id="lrateDisableRowsLimit">
+          Disable limit
+        </label>
+      </div>
+      <div class="row">
+        <label>
+          <input type="checkbox" id="lrateHandoffEnabled">
+          Retry failed row in other worker
+        </label>
+      </div>
+      <div class="row">
+        <label for="lrateHandoffRetries">Handoff retries:</label>
+        <input type="number" id="lrateHandoffRetries" min="1" max="10" step="1" inputmode="numeric">
+      </div>
+      <div id="lrateRowsPerWorkerError" class="error hidden">Enter integer from 1 to 50</div>
+      <div id="lrateHandoffRetriesError" class="error hidden">Enter integer from 1 to 10</div>
+    </div>
+  </div>
+  <div id="lRateStatusMessage" class="status info"></div>
+
+  <div id="autofillSection" class="autofill-section">
+    <div class="autofill-header">
+      <span>Right-click Autofill</span>
+      <span id="autofillModeHint"></span>
+    </div>
+    <div class="autofill-form">
+      <input id="autofillLabelInput" type="text" maxlength="120" placeholder="Label (e.g. Name)">
+      <textarea id="autofillValueInput" maxlength="50000" placeholder="Value to type"></textarea>
+      <div class="autofill-actions">
+        <button id="autofillSaveBtn" class="button inline">Add</button>
+        <button id="autofillCancelEditBtn" class="button secondary inline hidden">Cancel</button>
+      </div>
+      <div id="autofillFormError" class="error hidden"></div>
+    </div>
+    <div id="autofillProfilesList" class="autofill-list"></div>
+    <div id="autofillEmpty" class="autofill-empty hidden">No autofill templates yet.</div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

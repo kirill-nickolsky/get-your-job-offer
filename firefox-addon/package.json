@@ -1,0 +1,30 @@
+{
+  "name": "hrscrape2mart-firefox-addon",
+  "version": "1.0.0",
+  "description": "Firefox WebExtension for scraping Get on Board job listings",
+  "scripts": {
+    "build": "python3 build-python.py || node build.js || bash build.sh",
+    "build:python": "python3 build-python.py",
+    "build:sh": "bash build.sh",
+    "build:js": "node build.js",
+    "watch": "bash watch.sh",
+    "validate": "bash validate-xpi.sh",
+    "test": "node test-xpi.js",
+    "test:scrapers": "node test-scrapers.js",
+    "docs:sources": "node ../tools/describe-sources.js > ../docs/SOURCES.generated.md",
+    "docs:codemap": "node ../tools/generate-codemap.js",
+    "check:sources": "node ../tools/check-source-contract.js",
+    "context:refresh": "npm run docs:sources && npm run docs:codemap && npm run check:sources",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "firefox",
+    "webextension",
+    "scraper"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "jsdom": "^24.0.0"
+  }
+}
